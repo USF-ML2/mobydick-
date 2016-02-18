@@ -9,6 +9,7 @@ from matplotlib import mlab
 import cv2
 import pylab as pl
 
+
 #AIFF file to numpy arry
 def ReadAIFF(file):
 	s = aifc.open(file,'r')
@@ -41,6 +42,7 @@ class TrainData(object):
 		file.close()
 		self.numH1 = len(self.h1)
 		self.numH0 = len(self.h0)
+
 
 #return the spectogram & freq/time bins
 	def H1Sample(self, index=None, params=None):

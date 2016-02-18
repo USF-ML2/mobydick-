@@ -3,9 +3,6 @@
 	This file generates the test metrics
 """
 import sys
-sys.path.append('/anaconda/lib/python2.7/site-packages')
-sys.path.append('~/anaconda/bin/python')
-sys.path.append('/Library/Python/2.7/site-packages')
 import numpy as np
 import pylab as pl
 import cv2
@@ -23,23 +20,19 @@ def main():
 	###################### SET OUTPUT FILE NAME HERE ########################
 	testOutFile = baseDir+'workspace/testMetrics.csv'
 
-
 	############################## PARAMETERS ###############################
-	dataDir = baseDir+'data/'				   # Data directory
+	dataDir = baseDir+'train/'				   # Data directory
 	params = {'NFFT':256, 'Fs':2000, 'noverlap':192} # Spectogram parameters
 	maxTime = 60 # Number of time slice metrics
 
-
 	######################## BUILD A TestData OBJECT #######################
-	train = fileio.TrainData(dataDir+'train.csv',dataDir+'train/')
+	train = fileio.TrainData(baseDir+'train.csv',dataDir)
 	test = fileio.TestData(dataDir+'test/')
 
-
 	##################### BUILD A TemplateManager OBJECT ####################
-	tmplFile = baseDir+'moby/templateReduced.csv'
+	tmplFile = baseDir+'templateReduced.csv'
 	tmpl = templateManager.TemplateManager(fileName=tmplFile, 
 		trainObj=train, params=params)
-
 
 	################## VERTICAL BARS FOR HIFREQ METRICS #####################
 	bar_ = np.zeros((12,9), dtype = 'Float32')
@@ -49,10 +42,8 @@ def main():
 	bar1_[:,4:8] = 1.
 	bar2_[:,2:4] = 1.
 
-
 	########################### CREATE THE HEADER ###########################
 	outHdr = metrics.buildHeader(tmpl)
-
 
 	hL = []
 	####################### LOOP THROUGH THE FILE ###########################
@@ -64,7 +55,6 @@ def main():
 		out += metrics.highFreqTemplate(P, bar2_)
 		hL.append(out)			
 	hL = np.array(hL)
-
 
 	########################## WRITE TO FILE ################################
 	file = open(testOutFile,'w')

@@ -1,8 +1,5 @@
 
 import sys
-sys.path.append('/anaconda/lib/python2.7/site-packages')
-sys.path.append('~/anaconda/bin/python')
-sys.path.append('/Library/Python/2.7/site-packages')
 import os, cv2
 import numpy as np, pylab as pl
 from scipy.signal import convolve2d

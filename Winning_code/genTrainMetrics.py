@@ -3,9 +3,6 @@
 	This file generates the training metrics
 """
 import sys
-sys.path.append('/anaconda/lib/python2.7/site-packages')
-sys.path.append('~/anaconda/bin/python')
-sys.path.append('/Library/Python/2.7/site-packages')
 import os, cv2
 import numpy as np, pylab as pl
 import plotting #User created py file
@@ -19,7 +16,7 @@ def main():
 	baseDir = '/Users/abhisheksingh29895/Dropbox/AdvancedML_Project_/Data/' # Base directory
 
 	###################### SET OUTPUT FILE NAME HERE ########################
-	trainOutFile = baseDir+'trainMetrics.csv'
+	trainOutFile = baseDir+'workspace/trainMetrics.csv'
 
 	############################## PARAMETERS ###############################
 	dataDir = baseDir+'train/'# Data directory
@@ -29,7 +26,8 @@ def main():
 	maxTime = 60 # Number of time slice metrics
 
 	######################## BUILD A TrainData OBJECT #######################
-	train = fileio.TrainData('train.csv',dataDir+'train/')
+	# train = fileio.TrainData(baseDir+'train.csv',dataDir+'train/')
+	train = fileio.TrainData(baseDir+'train.csv',dataDir)
 
 	##################### BUILD A TemplateManager OBJECT ####################
 	tmplFile = baseDir+'templateReduced.csv'

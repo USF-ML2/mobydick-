@@ -25,7 +25,7 @@ def orderMetric(truth,n):
 def main():
 	baseDir = '/Users/abhisheksingh29895/Dropbox/AdvancedML_Project_/Data/'
 	# Open up the train file
-	train = fileio.TrainData(baseDir+'train.csv',baseDir+'Data/train/')
+	train = fileio.TrainData(baseDir+'train.csv',baseDir+'train/')
 	t_ = pd.read_csv(baseDir+'train.csv')
 	order32_ = orderMetric(t_.label,32)
 	order64_ = orderMetric(t_.label,64)
@@ -43,6 +43,7 @@ def main():
 		reorder32[k] = order32_[j] 
 		reorder64[k] = order64_[j] 
 		k += 1
+	#exporting the file
 	writeToFile(reorder32,'corr32.csv')
 	writeToFile(reorder64,'corr64.csv')
 	# There are 84503 samples

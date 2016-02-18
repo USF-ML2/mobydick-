@@ -2,9 +2,6 @@
 	Object that manages the templates
 """
 import sys
-sys.path.append('/anaconda/lib/python2.7/site-packages')
-sys.path.append('~/anaconda/bin/python')
-sys.path.append('/Library/Python/2.7/site-packages')
 import numpy as np
 import pylab as pl
 from matplotlib import mlab
