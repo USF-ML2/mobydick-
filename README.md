@@ -1,4 +1,4 @@
-## Advanced Machine Learning Project: mobydick-
+## Advanced Machine Learning Project
 Jason Helgren, Jaime Pastor, Abhishek Singh
 
 Kaggle competition: The Marinexplore and Cornell University Whale Detection Challenge
