@@ -7,7 +7,7 @@ Kaggle competition: The Marinexplore and Cornell University Whale Detection Chal
 
 Includes:
 - Winning submission code (modified)
-- Tutorials:
+- Tutorials (ipython notebooks):
   - Audio Analysis
   - Sound Spectrograms
   - Template Matching
