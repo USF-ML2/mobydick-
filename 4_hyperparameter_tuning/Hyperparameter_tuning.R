@@ -1,3 +1,4 @@
+#Author : Abhishek Singh
 
 #------------------------#------------------------#------------------------
 #---------------------# Making Predictions with H20 functions #-------------------
@@ -39,21 +40,21 @@ test  <-  h2o.assign(splits[[2]],  "test.hex")
 #---------------------# Making Predictions with Random Forests #-------------------
 #------------------------#------------------------#------------------------
 rf1  <-  h2o.randomForest(
-  training_frame  =  train,
-  validation_frame  =  test,
-  x  =  2:length(df) , #Predictors
-  y  =  1, #Response
-  ignore_const_cols  =  TRUE, #Remove Consts
-  model_id  =  "h2o_rf_whale", #Instance
-  balance_classes  =  TRUE, #Unbalanced data
-  max_depth  =  15,  #max depth
-  binomial_double_trees  =  TRUE,#Binary Class
-  mtries  =  75,  #mtry variables
-  stopping_metric  =  "AUC", #AUC stop
-  stopping_rounds  =  3, #Stopping criteria
-  stopping_tolerance  =  .0001, #Stopping threshold 
-  score_each_iteration  =  T,#Train & validation for each Tree
-  seed  =  100001)
+                          training_frame  =  train,
+                          validation_frame  =  test,
+                          x  =  2:length(df) , #Predictors
+                          y  =  1, #Response
+                          ignore_const_cols  =  TRUE, #Remove Consts
+                          model_id  =  "h2o_rf_whale", #Instance
+                          balance_classes  =  TRUE, #Unbalanced data
+                          max_depth  =  15,  #max depth
+                          binomial_double_trees  =  TRUE,#Binary Class
+                          mtries  =  75,  #mtry variables
+                          stopping_metric  =  "AUC", #AUC stop
+                          stopping_rounds  =  3, #Stopping criteria
+                          stopping_tolerance  =  .0001, #Stopping threshold 
+                          score_each_iteration  =  T,#Train & validation for each Tree
+                          seed  =  100001)
 
 #checking model performance
 summary(rf1) #checking the performance
@@ -61,6 +62,8 @@ rf1@model$validation_metrics  #Validation performance
 h2o.confusionMatrix(rf1) #Confusion Matrix
 h2o.auc(rf1,  train  =  TRUE,  valid  =  TRUE) #AUC  0.9544400 (1st Interaction)
 rf1@model$variable_importances[1:50, "variable"] #Important variables
+
+
 
 
 
@@ -106,8 +109,7 @@ gbm1  <-  h2o.gbm(
                   stopping_metric  =  "AUC", #AUC being the evaluation metric
                   stopping_tolerance  =  .0001,
                   score_each_iteration  =  T, 
-                  learn_rate  =  .56, 
-                #  checkpoint  =  model_grid@model_ids[[1]], #The best model from tuning 
+                  learn_rate  =  .40, #learn rate showing the best results
                   model_id  =  "h2o_gbm_whale",
                   seed  =  2000001)  #h20's seed
 
@@ -116,6 +118,76 @@ gbm1@model$validation_metrics   #Validation performance
 h2o.confusionMatrix(gbm1)
 h2o.auc(gbm1,  train  =  TRUE,  valid  =  TRUE) #AUC  
 gbm1@model$variable_importances[1:40, "variable"] #Important variables
+
+
+
+
+
+#------------------------#------------------------#------------------------
+#----------# Making Predictions with GBM  (With Template Matching) #----------
+#------------------------#------------------------#------------------------
+#fitting the best gbm
+gbm_tm  <-  h2o.gbm(
+  training_frame  =  train,
+  validation_frame  =  test,
+  x  =  2:151, #Predictors
+  y  =  1, #Response
+  distribution  =  'bernoulli', #Classification type
+  ntrees  =  50,  #Adding trees
+  ignore_const_cols  =  TRUE, #Remove Consts
+  sample_rate  =  .8,  #Out of box error
+  col_sample_rate  =  .8, #Random Subsampling 
+  balance_classes  =  TRUE,#Binary class 
+  stopping_rounds  =  3,
+  stopping_metric  =  "AUC", #AUC being the evaluation metric
+  stopping_tolerance  =  .0001,
+  score_each_iteration  =  T, 
+  learn_rate  =  .40, 
+  #  checkpoint  =  model_grid@model_ids[[1]], #The best model from tuning 
+  model_id  =  "h2o_gbm_whale",
+  seed  =  2000001)  #h20's seed
+
+summary(gbm_tm)   #GBM performance
+gbm_tm@model$validation_metrics   #Validation performance
+h2o.confusionMatrix(gbm_tm)
+h2o.auc(gbm_tm,  train  =  TRUE,  valid  =  TRUE) #AUC  
+gbm_tm@model$variable_importances[1:40, "variable"] #Important variables
+
+
+
+
+
+
+
+#------------------------#------------------------#------------------------
+#----------# Making Predictions with GBM  (Without Template Matching) #----------
+#------------------------#------------------------#------------------------
+#fitting the best gbm
+gbm_wtm  <-  h2o.gbm(
+  training_frame  =  train,
+  validation_frame  =  test,
+  x  =  152:length(train), #Predictors
+  y  =  1, #Response
+  distribution  =  'bernoulli', #Classification type
+  ntrees  =  50,  #Adding trees
+  ignore_const_cols  =  TRUE, #Remove Consts
+  sample_rate  =  .8,  #Out of box error
+  col_sample_rate  =  .8, #Random Subsampling 
+  balance_classes  =  TRUE,#Binary class 
+  stopping_rounds  =  3,
+  stopping_metric  =  "AUC", #AUC being the evaluation metric
+  stopping_tolerance  =  .0001,
+  score_each_iteration  =  T, 
+  learn_rate  =  .56, 
+  #  checkpoint  =  model_grid@model_ids[[1]], #The best model from tuning 
+  model_id  =  "h2o_gbm_whale",
+  seed  =  2000001)  #h20's seed
+
+summary(gbm_wtm)   #GBM performance
+gbm_wtm@model$validation_metrics   #Validation performance
+h2o.confusionMatrix(gbm_wtm)
+h2o.auc(gbm_wtm,  train  =  TRUE,  valid  =  TRUE) #AUC  
+gbm_tm@model$variable_importances[1:40, "variable"] #Important variables
 
 
 
